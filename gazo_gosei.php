@@ -27,7 +27,47 @@
 
 		return ;
 	}
+	
+	if ($_FILES['originalfiles']) 
+	{
+		$file_ary = reArrayFiles($_FILES['originalfiles']);
+		foreach ($file_ary as $file) {
+	        print 'File Name: ' . $file['name'];
+	        print 'File Type: ' . $file['type'];
+	        print 'File Size: ' . $file['size'];
+	        print 'TMP File: ' . $file['tmp_name'];
+	        
+			$file1 = $file['tmp_name'];		//ベース画像ファイル
+			$file2 = "./img/fit/". FIT_IMG;                 //埋め込み画像ファイル7
+			$file3 = '/Applications/XAMPP/xamppfiles/htdocs/composition/test/' . $file['name']; //$rpath. "". MAKE_DIR. "/". $obj;                            //画像保存先
+			$img = ImageCreateFromJPEG($file1);                    //ベース画像ファイル読み込み
+			$img2 = ImageCreateFromPNG($file2);                    //埋め込み画像ファイル読み込み
+			$size1 = GetImageSize($file1);                        //ベース画像のサイズを取得
+			
+			//print_r($size1);
+			$size2 = GetImageSize($file2);                        //　埋め込み画像のサイズを取得
+			$left = ($size1[0] - $size2[0]) - LOGO_RIGHT;                    //　埋め込み位置（右)
+			$top = ($size1[1] - $size2[1]) - LOGO_BOTTOM;                    //　埋め込み位置（下）
+			
+			ImageCopy($img, $img2, $left, $top, 0, 0, $size2[0], $size2[1]);     //　画像合成
+			ImageJPEG($img, $file3,100);                        //　画像保存
+			ImageDestroy($img);
+			ImageDestroy($img2);
+		}
+        
+    }
     
+    
+	function is_img($img_path="")
+	{
+	    if (!(file_exists($img_path) and $type=exif_imagetype($img_path))) return false;
+	    if (IMAGETYPE_GIF == $type) return 'gif';
+	    else if (IMAGETYPE_JPEG == $type) return 'jpg';
+	    else if (IMAGETYPE_PNG == $type) return 'png';
+	    return false;
+	}
+	
+/*
 	//ファイル名をリスト表示する
 	while($obj = readdir($fldr)){
 		if (is_dir($obj) == FALSE){
@@ -62,27 +102,21 @@
 			}
 		}
 	}
-    /*
-    $file1 = "./img/photo/DSC_0012.jpg";                    //　ベース画像ファイル
-    $file2 = "./img/fit/". FIT_IMG;                    		//　埋め込み画像ファイル7
-    $file3 = "./img/c.jpg";                            //　画像保存先
-    $img = ImageCreateFromJPEG($file1);                    //　ベース画像ファイル読み込み
-    $img2 = ImageCreateFromGIF($file2);                    //　埋め込み画像ファイル読み込み
-    $size1 = GetImageSize($file1);                        //　ベース画像のサイズを取得
-    
-    //print_r($size1);
-    $size2 = GetImageSize($file2);                        //　埋め込み画像のサイズを取得
-    $left = ($size1[0] - $size2[0]) - LOGO_RIGHT;                    //　埋め込み位置（右)
-    $top = ($size1[1] - $size2[1]) - LOGO_BOTTOM;                    //　埋め込み位置（下）
-    
-    
-//    $left = ($size1[0] - $size2[0]) / 2;                    //　埋め込み位置（左）（ベース画像の中心に埋め込み）
-//    $top = ($size1[1] - $size2[1]) / 2;                    //　埋め込み位置（上）
-    ImageCopy($img, $img2, $left, $top, 0, 0, $size2[0], $size2[1]);     //　画像合成
-    ImageJPEG($img, $file3,100);                        //　画像保存
-    ImageDestroy($img);
-    ImageDestroy($img2);
-    */
+ */
+function reArrayFiles(&$file_post) {
+
+    $file_ary = array();
+    $file_count = count($file_post['name']);
+    $file_keys = array_keys($file_post);
+
+    for ($i=0; $i<$file_count; $i++) {
+        foreach ($file_keys as $key) {
+            $file_ary[$i][$key] = $file_post[$key][$i];
+        }
+    }
+
+    return $file_ary;
+}
 ?>
 
 画像を合成・保存しました。<br>
