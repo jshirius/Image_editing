@@ -43,10 +43,10 @@
 					
 			    $file1 = $rpath. "/". $obj;                    //ベース画像ファイル
 			    $file2 = "./img/fit/". FIT_IMG;                 //埋め込み画像ファイル7
-			    $file3 = $rpath. "". MAKE_DIR. "/". $obj;                            //　画像保存先
-			    $img = ImageCreateFromJPEG($file1);                    //　ベース画像ファイル読み込み
-			    $img2 = ImageCreateFromPNG($file2);                    //　埋め込み画像ファイル読み込み
-			    $size1 = GetImageSize($file1);                        //　ベース画像のサイズを取得
+			    $file3 = $rpath. "". MAKE_DIR. "/". $obj;                            //画像保存先
+			    $img = ImageCreateFromJPEG($file1);                    //ベース画像ファイル読み込み
+			    $img2 = ImageCreateFromPNG($file2);                    //埋め込み画像ファイル読み込み
+			    $size1 = GetImageSize($file1);                        //ベース画像のサイズを取得
 			    
 			    //print_r($size1);
 			    $size2 = GetImageSize($file2);                        //　埋め込み画像のサイズを取得
