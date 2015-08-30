@@ -41,8 +41,8 @@
 					mkdir($rpath . MAKE_DIR . "/",0777);
 				}
 					
-			    $file1 = $rpath. "/". $obj;                    //　ベース画像ファイル
-			    $file2 = "./img/fit/". FIT_IMG;                    		//　埋め込み画像ファイル7
+			    $file1 = $rpath. "/". $obj;                    //ベース画像ファイル
+			    $file2 = "./img/fit/". FIT_IMG;                 //埋め込み画像ファイル7
 			    $file3 = $rpath. "". MAKE_DIR. "/". $obj;                            //　画像保存先
 			    $img = ImageCreateFromJPEG($file1);                    //　ベース画像ファイル読み込み
 			    $img2 = ImageCreateFromPNG($file2);                    //　埋め込み画像ファイル読み込み

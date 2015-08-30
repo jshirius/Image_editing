@@ -1,0 +1,37 @@
+@CHARSET "UTF-8";
+
+/* --- 全体の背景・テキスト --- */
+body {
+margin: 0;
+padding: 0;
+background-color: #f0f0f0; /* ページの背景色 */
+color: #000000; /* 全体の文字色 */
+font-size: 100%; /* 全体の文字サイズ */
+}
+
+/* --- 全体のリンクテキスト --- */
+a:link { color: #0000ff; }
+a:visited { color: #800080; }
+a:hover { color: #ff0000; }
+a:active { color: #ff0000; }
+
+/* --- コンテナ --- */
+#container {
+width: 780px; /* ページの幅 */
+margin: 0 auto; /* センタリング */
+}
+
+/* --- ヘッダ --- */
+#header {
+background-color: #ffe080; /* ヘッダの背景色 */
+}
+
+/* --- コンテンツ --- */
+#content {
+background-color: #ffffff; /* コンテンツの背景色 */
+}
+
+/* --- フッタ --- */
+#footer {
+background-color: #cccccc; /* フッタの背景色 */
+}
