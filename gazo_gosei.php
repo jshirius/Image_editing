@@ -31,6 +31,7 @@
 	if ($_FILES['originalfiles']) 
 	{
 		$file_ary = reArrayFiles($_FILES['originalfiles']);
+		$imgs[] = array();
 		foreach ($file_ary as $file) {
 	        print 'File Name: ' . $file['name'];
 	        print 'File Type: ' . $file['type'];
@@ -39,7 +40,8 @@
 	        
 			$file1 = $file['tmp_name'];		//ベース画像ファイル
 			$file2 = "./img/fit/". FIT_IMG;                 //埋め込み画像ファイル7
-			$file3 = '/Applications/XAMPP/xamppfiles/htdocs/composition/test/' . $file['name']; //$rpath. "". MAKE_DIR. "/". $obj;                            //画像保存先
+			//$file3 = '/Applications/XAMPP/xamppfiles/htdocs/composition/test/' . $file['name']; //$rpath. "". MAKE_DIR. "/". $obj;                            //画像保存先
+			$file3 = './work/' . $file['name']; //$rpath. "". MAKE_DIR. "/". $obj;    
 			$img = ImageCreateFromJPEG($file1);                    //ベース画像ファイル読み込み
 			$img2 = ImageCreateFromPNG($file2);                    //埋め込み画像ファイル読み込み
 			$size1 = GetImageSize($file1);                        //ベース画像のサイズを取得
@@ -53,11 +55,22 @@
 			ImageJPEG($img, $file3,100);                        //　画像保存
 			ImageDestroy($img);
 			ImageDestroy($img2);
+			
+			$imgs[] = $file3;
 		}
+		
+		
+		//ZipArchiveクラスを使ってZIPに固める
+		zipImg($imgs,null);
         
     }
     
-    
+	/**
+	* 画像ファイルかチェックする
+	*
+	* @param string $img_path imgパス
+	* @return false　画像ファイルでない string 画像の拡張子
+	*/
 	function is_img($img_path="")
 	{
 	    if (!(file_exists($img_path) and $type=exif_imagetype($img_path))) return false;
@@ -65,6 +78,36 @@
 	    else if (IMAGETYPE_JPEG == $type) return 'jpg';
 	    else if (IMAGETYPE_PNG == $type) return 'png';
 	    return false;
+	}
+	
+	/**
+	* 画像をZIPに固める
+	*
+	* @param string $img_path imgパス
+	* @param string $outZip zipファイルパス
+	* @return false　画像ファイルでない string 画像の拡張子
+	*/
+	function zipImg($imgs, $outZip)
+	{
+		
+		// 圧縮ファイルのパス
+		// 圧縮するファイルの配列
+		$files = $imgs;
+		 
+		$zip = new ZipArchive();
+		$res = $zip->open('./work/test2.zip', ZipArchive::CREATE);
+		 
+		if($res === true){
+		    foreach($files as $file){
+		        $zip->addFile($file);
+		    }
+		    $zip->close();
+		} else {
+		    echo 'Error Code: ' . $res;
+		}
+		//複数ユーザが使うことを考慮して zipファイル名は時間で変わるようにする
+		
+		
 	}
 	
 /*

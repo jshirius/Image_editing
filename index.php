@@ -26,7 +26,7 @@
 写真などの名前をつけるときに使える
 
 
-<form action="test.php" method="post" enctype="multipart/form-data">
+<form action="gazo_gosei.php" method="post" enctype="multipart/form-data">
 <p>元の写真を選択してください</p>
   <input name="originalfiles[]" type="file" multiple="multiple" /><br />
   
